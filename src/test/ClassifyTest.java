@@ -2,9 +2,9 @@ package test;
 
 import java.io.IOException;
 import java.util.Vector;
-import segmentation.VecMaking;
+import segmentation.*;
 
-public class VecTest {
+public class ClassifyTest {
 
 	public static void main(String[] args) throws IOException {
 		VecMaking test;
@@ -12,12 +12,11 @@ public class VecTest {
 		test.SetVecFrom("/Users/xuan/Documents/workspace/FenCi/MiniCorpus.txt");
 		Vector<Vector<Double>> result;
 		result = test.getVecs();
-		int i;
-		for(i = 0; i < 10; i++) {
-			System.out.println(result.elementAt(20*i));
-		}
-		System.out.println();
-		System.out.println("测试完成");
+		Classifying cla;
+		cla = new Classifying();
+		cla.Train(result);
+		cla.Save("/Users/xuan/Documents/workspace/FenCi/Theta.txt");
+		System.out.println("测试完成，结果已保存");
 	}
 
 }

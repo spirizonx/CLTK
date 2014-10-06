@@ -17,8 +17,8 @@ public class Segmenting {
 		dict = new Training();
 		cla = new Classifying();
 		//词典和分类器的整备暂时在此进行
-		dict.Train("/Users/xuan/Documents/workspace/FenCi/MiniCorpus.txt");
-		cla.Load("/Users/xuan/Documents/workspace/FenCi/Theta.txt");
+		dict.Train("/Users/xuan/Documents/workspace/FenCi/msr_training.txt");
+		cla.Load("/Users/xuan/Documents/workspace/FenCi/msr_theta.txt");
 	}
 	
 	private boolean isEngOrNum(char inchar) {
@@ -76,6 +76,19 @@ public class Segmenting {
 		}
 		while(true) {
 			int size = line.length();
+			if(size < 5) {
+				try {
+					line = bw.readLine();
+					//line = line + "\n";
+				} catch (IOException e) {
+					System.out.println("读源文件时发生错误。");
+					e.printStackTrace();
+				}
+				if(line == null) {
+					break;
+				}
+				continue;
+			}
 			result = new Vector<>();
 			//开头
 			tmp = new Vector<>();

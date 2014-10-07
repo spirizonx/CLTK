@@ -16,6 +16,15 @@ public class Training {
 		r_no = new HashMap<>();
 	}
 	
+	//增加两个直接访问词典结果的函数
+	public int getYES(String que) {
+		return r_yes.getOrDefault(que, 0);
+	}
+	
+	public int getNO(String que) {
+		return r_no.getOrDefault(que, 0);
+	}
+	
 	//目标：把每一个特性（如前一个/两个字导出后面是（和不是）词间隔的次数）存储进Map中
 	//训练以下四类：前两个、前一个、后一个、后两个
 	public void Train_Pccb(String CorpFile) throws IOException {

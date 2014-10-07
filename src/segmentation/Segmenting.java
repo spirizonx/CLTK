@@ -17,8 +17,8 @@ public class Segmenting {
 		dict = new Training();
 		cla = new Classifying();
 		//词典和分类器的整备暂时在此进行
-		dict.Train("/Users/xuan/Documents/workspace/FenCi/MiniCorpus.txt");
-		cla.Load("/Users/xuan/Documents/workspace/FenCi/Theta.txt");
+		dict.Train("/Users/xuan/Documents/workspace/FenCi/msr_training.txt");
+		cla.Load("/Users/xuan/Documents/workspace/FenCi/msr_theta.txt");
 	}
 	
 	private boolean isEngOrNum(char inchar) {
@@ -38,8 +38,8 @@ public class Segmenting {
 	}
 	
 	private boolean isPunc(char inchar) {
-		char[] Puncs = {'。', '，', '、', '—', '“', '”', '《', '》'};
-		int Punc_count = 8;
+		char[] Puncs = {'。', '，', '、', '—', '“', '”', '《', '》', '？'};
+		int Punc_count = 9;
 		for(int i = 0; i < Punc_count; i++) {
 			if(inchar == Puncs[i]) {
 				return true;
@@ -76,15 +76,35 @@ public class Segmenting {
 		}
 		while(true) {
 			int size = line.length();
+			if(size < 5) {
+				try {
+					line = bw.readLine();
+					//line = line + "\n";
+				} catch (IOException e) {
+					System.out.println("读源文件时发生错误。");
+					e.printStackTrace();
+				}
+				if(line == null) {
+					break;
+				}
+				continue;
+			}
 			result = new Vector<>();
 			//开头
-			tmp = new Vector<>();
+			/*tmp = new Vector<>();
 			tmp.add(0.5);
 			tmp.add(dict.getProbab("-" + line.charAt(0)));
 			tmp.add(dict.getProbab("-+" + line.charAt(0) + line.charAt(1)));
 			tmp.add(dict.getProbab("+" + line.charAt(1)));
 			tmp.add(dict.getProbab("++" + line.charAt(1) + line.charAt(2)));
-			result.add((int)cla.Classify(tmp));
+			result.add((int)cla.Classify(tmp));*/
+			if(dict.getYES("-+" + line.charAt(0) + line.charAt(1))
+					> dict.getNO("-+" + line.charAt(0) + line.charAt(1))) {
+				result.add(1);
+			}
+			else {
+				result.add(0);
+			}
 			//中段
 			for(int i = 1; i < size-2; i++) {
 				tmp = new Vector<>();
@@ -96,13 +116,21 @@ public class Segmenting {
 				result.add((int)cla.Classify(tmp));
 			}
 			//结尾
-			int i = size - 2;
+			/*int i = size - 2;
+			tmp = new Vector<>;
 			tmp.add(dict.getProbab("--" + line.charAt(i-1) + line.charAt(i)));
 			tmp.add(dict.getProbab("-" + line.charAt(i)));
 			tmp.add(dict.getProbab("-+" + line.charAt(i) + line.charAt(i+1)));
 			tmp.add(dict.getProbab("+" + line.charAt(i+1)));
 			tmp.add(0.5);
-			result.add((int)cla.Classify(tmp));
+			result.add((int)cla.Classify(tmp));*/
+			if(dict.getYES("-+" + line.charAt(size-2) + line.charAt(size-1))
+					> dict.getNO("-+" + line.charAt(size-2) + line.charAt(size-1))) {
+				result.add(1);
+			}
+			else {
+				result.add(0);
+			}
 			//result.add(0);
 			//根据result向量的指示向文件输出分词结果
 			for(int k = 0; k < size-1; k++) {

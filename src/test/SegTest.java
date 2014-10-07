@@ -8,8 +8,8 @@ public class SegTest {
 	public static void main(String[] args) throws IOException {
 		Segmenting test;
 		test = new Segmenting();
-		test.SegInFile("/Users/xuan/Documents/workspace/FenCi/Test.txt",
-				"/Users/xuan/Documents/workspace/FenCi/Result.txt");
+		test.SegInFile("/Users/xuan/Documents/workspace/FenCi/msr_test.txt",
+				"/Users/xuan/Documents/workspace/FenCi/msr_result2.txt");
 		System.out.println("测试完成。");
 	}
 

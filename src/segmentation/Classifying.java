@@ -10,6 +10,7 @@ import java.lang.Math;
 import java.util.ArrayList;
 
 public class Classifying {
+	//这个分类器的训练速度……太慢
 	private Vector<Double> theta;
 	private int dim;
 	//给出一个仅供参考的theta值：

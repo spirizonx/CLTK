@@ -239,11 +239,12 @@ public class VecMaking {
 				}
 			}
 			endTest = in.read();
+			i++;
 		}
 		
 		try {
 			in.close();
-			i++;
+			
 		} catch (IOException e) {
 			//do nothing...
 		}

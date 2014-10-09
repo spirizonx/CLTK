@@ -21,7 +21,7 @@ public class Classifying3 {
 		}
 	}
 	
-	private double h(Vector<Double> X) {
+	public double h(Vector<Double> X) {
 		double tmp = 0;
 		for(int i = 0; i < dim; i++) {
 			tmp = tmp + theta.elementAt(i) * X.elementAt(i);

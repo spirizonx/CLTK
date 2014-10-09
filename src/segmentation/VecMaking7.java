@@ -52,7 +52,7 @@ public class VecMaking7 {
 				for(int t = 2; t < 14; t = t + 2) {
 					while(chars[t] == ' ' && chars[t+1] == ' ') {
 						for(int tt = t; tt < 13; tt++) {
-							chars[t] = chars[t+1];
+							chars[tt] = chars[tt+1];
 						}
 						endTest = in.read();	
 						if(endTest != -1) {
@@ -64,156 +64,73 @@ public class VecMaking7 {
 					if(endTest == -1) {
 						break;
 					}
-				}	//以下部分尚未改写
+				}
 				
 				//下面正式开始生成向量
-				if(char2 == ' ') {
-					if(char4 == ' ') {
-						if(char6 == ' ') {
-							tmp = new Vector<>();
-							tmp.add(1.0);
-							tmp.add(Dict.getProbab("--"+char1+char3));
-							tmp.add(Dict.getProbab("-"+char3));
-							tmp.add(Dict.getProbab("-+"+char3+char5));
-							tmp.add(Dict.getProbab("+"+char5));
-							tmp.add(Dict.getProbab("++"+char5+char7));
-							Vecs.add(tmp);
-						}
-						else {
-							tmp = new Vector<>();
-							tmp.add(1.0);
-							tmp.add(Dict.getProbab("--"+char1+char3));
-							tmp.add(Dict.getProbab("-"+char3));
-							tmp.add(Dict.getProbab("-+"+char3+char5));
-							tmp.add(Dict.getProbab("+"+char5));
-							tmp.add(Dict.getProbab("++"+char5+char6));
-							Vecs.add(tmp);
-						}
-					}
-					else {
-						if(char5 == ' ') {
-							if(char6 == ' ') {
-								tmp = new Vector<>();
-								tmp.add(0.0);
-								tmp.add(Dict.getProbab("--"+char1+char3));
-								tmp.add(Dict.getProbab("-"+char3));
-								tmp.add(Dict.getProbab("-+"+char3+char4));
-								tmp.add(Dict.getProbab("+"+char4));
-								tmp.add(Dict.getProbab("++"+char4+char7));
-								Vecs.add(tmp);
-							}
-							else {
-								tmp = new Vector<>();
-								tmp.add(0.0);
-								tmp.add(Dict.getProbab("--"+char1+char3));
-								tmp.add(Dict.getProbab("-"+char3));
-								tmp.add(Dict.getProbab("-+"+char3+char4));
-								tmp.add(Dict.getProbab("+"+char4));
-								tmp.add(Dict.getProbab("++"+char4+char6));
-								Vecs.add(tmp);
-							}
-						}
-						else {
-							tmp = new Vector<>();
-							tmp.add(0.0);
-							tmp.add(Dict.getProbab("--"+char1+char3));
-							tmp.add(Dict.getProbab("-"+char3));
-							tmp.add(Dict.getProbab("-+"+char3+char4));
-							tmp.add(Dict.getProbab("+"+char4));
-							tmp.add(Dict.getProbab("++"+char4+char5));
-							Vecs.add(tmp);
+				char before[], after[];
+				before = new char[3];
+				after = new char[3];
+				int ii, jj, count = 0;
+				for(ii = 0; ; ii++) {
+					if(chars[ii] != ' ') {
+						before[count] = chars[ii];
+						count = count + 1;
+						if(count == 3) {
+							break;
 						}
 					}
 				}
+				count = 0;
+				if(chars[ii+1] == ' ') {
+					for(jj = ii+2; ; jj++) {
+						if(chars[jj] != ' ') {
+							after[count] = chars[jj];
+							count++;
+							if(count == 3) {
+								break;
+							}
+						}
+					}
+					tmp = new Vector<>();
+					tmp.add(1.0);
+					tmp.add(Dict.getProbab("---"+before[0]+before[1]+before[2]));
+					tmp.add(Dict.getProbab("--"+before[1]+before[2]));
+					tmp.add(Dict.getProbab("-"+before[2]));
+					tmp.add(Dict.getProbab("-+"+before[2]+after[0]));
+					tmp.add(Dict.getProbab("+"+after[0]));
+					tmp.add(Dict.getProbab("++"+after[0]+after[1]));
+					tmp.add(Dict.getProbab("+++"+after[0]+after[1]+after[2]));
+					Vecs.add(tmp);
+				}
 				else {
-					if(char3 == ' ') {
-						if(char4 == ' ') {
-							if(char6 == ' ') {
-								tmp = new Vector<>();
-								tmp.add(1.0);
-								tmp.add(Dict.getProbab("--"+char1+char2));
-								tmp.add(Dict.getProbab("-"+char2));
-								tmp.add(Dict.getProbab("-+"+char2+char5));
-								tmp.add(Dict.getProbab("+"+char5));
-								tmp.add(Dict.getProbab("++"+char5+char7));
-								Vecs.add(tmp);
-							}
-							else {
-								tmp = new Vector<>();
-								tmp.add(1.0);
-								tmp.add(Dict.getProbab("--"+char1+char2));
-								tmp.add(Dict.getProbab("-"+char2));
-								tmp.add(Dict.getProbab("-+"+char2+char5));
-								tmp.add(Dict.getProbab("+"+char5));
-								tmp.add(Dict.getProbab("++"+char5+char6));
-								Vecs.add(tmp);
-							}
-						}
-						else {
-							if(char5 == ' ') {
-								if(char6 == ' ') {
-									tmp = new Vector<>();
-									tmp.add(1.0);
-									tmp.add(Dict.getProbab("--"+char1+char2));
-									tmp.add(Dict.getProbab("-"+char2));
-									tmp.add(Dict.getProbab("-+"+char2+char4));
-									tmp.add(Dict.getProbab("+"+char4));
-									tmp.add(Dict.getProbab("++"+char4+char7));
-									Vecs.add(tmp);
-								}
-								else {
-									tmp = new Vector<>();
-									tmp.add(1.0);
-									tmp.add(Dict.getProbab("--"+char1+char2));
-									tmp.add(Dict.getProbab("-"+char2));
-									tmp.add(Dict.getProbab("-+"+char2+char4));
-									tmp.add(Dict.getProbab("+"+char4));
-									tmp.add(Dict.getProbab("++"+char4+char6));
-									Vecs.add(tmp);
-								}
-							}
-							else {
-								tmp = new Vector<>();
-								tmp.add(1.0);
-								tmp.add(Dict.getProbab("--"+char1+char2));
-								tmp.add(Dict.getProbab("-"+char2));
-								tmp.add(Dict.getProbab("-+"+char2+char4));
-								tmp.add(Dict.getProbab("+"+char4));
-								tmp.add(Dict.getProbab("++"+char4+char5));
-								Vecs.add(tmp);
+					for(jj = ii+1; ; jj++) {
+						if(chars[jj] != ' ') {
+							after[count] = chars[jj];
+							count++;
+							if(count == 3) {
+								break;
 							}
 						}
 					}
-					else {
-						if(char4 == ' ') {
-							tmp = new Vector<>();
-							tmp.add(0.0);
-							tmp.add(Dict.getProbab("--"+char1+char2));
-							tmp.add(Dict.getProbab("-"+char2));
-							tmp.add(Dict.getProbab("-+"+char2+char3));
-							tmp.add(Dict.getProbab("+"+char3));
-							tmp.add(Dict.getProbab("++"+char3+char5));
-							Vecs.add(tmp);
-						}
-						else {
-							tmp = new Vector<>();
-							tmp.add(0.0);
-							tmp.add(Dict.getProbab("--"+char1+char2));
-							tmp.add(Dict.getProbab("-"+char2));
-							tmp.add(Dict.getProbab("-+"+char2+char3));
-							tmp.add(Dict.getProbab("+"+char3));
-							tmp.add(Dict.getProbab("++"+char3+char4));
-							Vecs.add(tmp);
-						}
-					}
+					tmp = new Vector<>();
+					tmp.add(0.0);
+					tmp.add(Dict.getProbab("---"+before[0]+before[1]+before[2]));
+					tmp.add(Dict.getProbab("--"+before[1]+before[2]));
+					tmp.add(Dict.getProbab("-"+before[2]));
+					tmp.add(Dict.getProbab("-+"+before[2]+after[0]));
+					tmp.add(Dict.getProbab("+"+after[0]));
+					tmp.add(Dict.getProbab("++"+after[0]+after[1]));
+					tmp.add(Dict.getProbab("+++"+after[0]+after[1]+after[2]));
+					Vecs.add(tmp);
 				}
 			}
 			endTest = in.read();
+			i++;
 		}
 		
 		try {
 			in.close();
-			i++;
+			
 		} catch (IOException e) {
 			//do nothing...
 		}

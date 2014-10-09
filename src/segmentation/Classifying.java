@@ -12,8 +12,6 @@ import java.util.ArrayList;
 public class Classifying {
 	private Vector<Double> theta;
 	private int dim;
-	//给出一个仅供参考的theta值：
-	//[0.8411980493492742 -1.8317604794539857 3.725918833455806 -1.6481082845749344 1.2842262106030224]
 	
 	public Classifying() {
 		theta = new Vector<>();
@@ -23,7 +21,7 @@ public class Classifying {
 		}
 	}
 	
-	private double h(Vector<Double> X) {
+	public double h(Vector<Double> X) {
 		double tmp = 0;
 		for(int i = 0; i < dim; i++) {
 			tmp = tmp + theta.elementAt(i) * X.elementAt(i);

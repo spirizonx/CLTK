@@ -11,14 +11,21 @@ public class Segmenting {
 	//使用情况：已训练好分类器
 	//如未训练，可暂时用ClassifyTest训练
 	private Training dict;
-	private Classifying cla;
+	private Classifying cla5;
+	private Classifying3 cla3;
+	private Classifying7 cla7;
 	
 	public Segmenting() throws IOException {
 		dict = new Training();
-		cla = new Classifying();
+		cla5 = new Classifying();
+		cla3 = new Classifying3();
+		cla7 = new Classifying7();
+		
 		//词典和分类器的整备暂时在此进行
 		dict.Train("/Users/xuan/Documents/workspace/FenCi/msr_training.txt");
-		cla.Load("/Users/xuan/Documents/workspace/FenCi/msr_theta_new.txt");
+		cla5.Load("/Users/xuan/Documents/workspace/FenCi/msr_theta_5.txt");
+		cla3.Load("/Users/xuan/Documents/workspace/FenCi/msr_theta_3.txt");
+		cla7.Load("/Users/xuan/Documents/workspace/FenCi/msr_theta_7.txt");
 	}
 	
 	private boolean isEngOrNum(char inchar) {
@@ -76,7 +83,7 @@ public class Segmenting {
 		}
 		while(true) {
 			int size = line.length();
-			if(size < 4) {
+			if(size < 6) {
 				fw.write(line);
 				fw.write('\n');
 				fw.flush();
@@ -93,58 +100,86 @@ public class Segmenting {
 				continue;
 			}
 			result = new Vector<>();
+			double res3, res5, res7;
 			//开头
-			/*tmp = new Vector<>();
-			tmp.add(0.5);
+			//第一个间隔
+			tmp = new Vector<>();
 			tmp.add(dict.getProbab("-" + line.charAt(0)));
 			tmp.add(dict.getProbab("-+" + line.charAt(0) + line.charAt(1)));
 			tmp.add(dict.getProbab("+" + line.charAt(1)));
-			tmp.add(dict.getProbab("++" + line.charAt(1) + line.charAt(2)));
-			result.add((int)cla.Classify(tmp));*/
-			if(dict.getYES("-+" + line.charAt(0) + line.charAt(1))
-					> dict.getNO("-+" + line.charAt(0) + line.charAt(1))) {
+			result.add((int)cla3.Classify(tmp));
+			//第二个间隔
+			tmp = new Vector<>();
+			tmp.add(dict.getProbab("-" + line.charAt(1)));
+			tmp.add(dict.getProbab("-+" + line.charAt(1) + line.charAt(2)));
+			tmp.add(dict.getProbab("+" + line.charAt(2)));
+			res3 = cla3.h(tmp);
+			tmp.add(0, dict.getProbab("--" + line.charAt(0) + line.charAt(1)));
+			tmp.add(dict.getProbab("++" + line.charAt(2) + line.charAt(3)));
+			res5 = cla5.h(tmp);
+			//下面就涉及到了权重
+			if(res3 + res5 > 1) {
 				result.add(1);
-			}
-			else {
+			} else {
 				result.add(0);
 			}
 			//中段
-			for(int i = 1; i < size-2; i++) {
+			for(int i = 2; i < size-3; i++) {
 				tmp = new Vector<>();
-				tmp.add(dict.getProbab("--" + line.charAt(i-1) + line.charAt(i)));
 				tmp.add(dict.getProbab("-" + line.charAt(i)));
 				tmp.add(dict.getProbab("-+" + line.charAt(i) + line.charAt(i+1)));
 				tmp.add(dict.getProbab("+" + line.charAt(i+1)));
+				res3 = cla3.h(tmp);
+				tmp.add(0, dict.getProbab("--" + line.charAt(i-1) + line.charAt(i)));
 				tmp.add(dict.getProbab("++" + line.charAt(i+1) + line.charAt(i+2)));
-				result.add((int)cla.Classify(tmp));
+				res5 = cla5.h(tmp);
+				tmp.add(0, dict.getProbab("---" + line.charAt(i-2) + line.charAt(i-1) + line.charAt(i)));
+				tmp.add(dict.getProbab("+++" + line.charAt(i+1) + line.charAt(i+2) + line.charAt(i+3)));
+				res7 = cla7.h(tmp);
+				//这里又涉及到权重问题
+				if(0.3*res3 + 0.3*res5 + 0.4*res7 > 0.5) {
+					result.add(1);
+				} else {
+					result.add(0);
+				}
+				/*if(res7 > 0.5) {
+					result.add(1);
+				} else {
+					result.add(0);
+				}*/
 			}
 			//结尾
-			/*int i = size - 2;
-			tmp = new Vector<>;
-			tmp.add(dict.getProbab("--" + line.charAt(i-1) + line.charAt(i)));
-			tmp.add(dict.getProbab("-" + line.charAt(i)));
-			tmp.add(dict.getProbab("-+" + line.charAt(i) + line.charAt(i+1)));
-			tmp.add(dict.getProbab("+" + line.charAt(i+1)));
-			tmp.add(0.5);
-			result.add((int)cla.Classify(tmp));*/
-			if(dict.getYES("-+" + line.charAt(size-2) + line.charAt(size-1))
-					> dict.getNO("-+" + line.charAt(size-2) + line.charAt(size-1))) {
+			//倒数第二个
+			tmp = new Vector<>();
+			tmp.add(dict.getProbab("-" + line.charAt(size-3)));
+			tmp.add(dict.getProbab("-+" + line.charAt(size-3) + line.charAt(size-2)));
+			tmp.add(dict.getProbab("+" + line.charAt(size-2)));
+			res3 = cla3.h(tmp);
+			tmp.add(0, dict.getProbab("--" + line.charAt(size-4) + line.charAt(size-3)));
+			tmp.add(dict.getProbab("++" + line.charAt(size-2) + line.charAt(size-1)));
+			res5 = cla5.h(tmp);
+			if(res3 + res5 > 1) {
 				result.add(1);
-			}
-			else {
+			} else {
 				result.add(0);
 			}
-			//result.add(0);
+			//倒数第一个
+			tmp = new Vector<>();
+			tmp.add(dict.getProbab("-" + line.charAt(size-2)));
+			tmp.add(dict.getProbab("-+" + line.charAt(size-2) + line.charAt(size-1)));
+			tmp.add(dict.getProbab("+" + line.charAt(size-1)));
+			result.add((int)cla3.Classify(tmp));
+			
 			//根据result向量的指示向文件输出分词结果
 			for(int k = 0; k < size-1; k++) {
 				if(isPunc(line.charAt(k))) {
 					fw.write(line.charAt(k));
-					fw.write(' ');
+					fw.write("  ");
 					continue;
 				}
 				if(isPunc(line.charAt(k+1))) {
 					fw.write(line.charAt(k));
-					fw.write(' ');
+					fw.write("  ");
 					continue;
 				}
 				if(isEngOrNum(line.charAt(k))) {
@@ -154,18 +189,18 @@ public class Segmenting {
 					}
 					else {
 						fw.write(line.charAt(k));
-						fw.write(' ');
+						fw.write("  ");
 						continue;
 					}
 				}
 				if(isEngOrNum(line.charAt(k+1))) {
 					fw.write(line.charAt(k));
-					fw.write(' ');
+					fw.write("  ");
 					continue;
 				}
 				if(result.elementAt(k) == 1) {
 					fw.write(line.charAt(k));
-					fw.write(' ');
+					fw.write("  ");
 					continue;
 				} else {
 					fw.write(line.charAt(k));

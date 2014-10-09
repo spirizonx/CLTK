@@ -16,7 +16,7 @@ public class ClassifyTest {
 		Classifying cla;
 		cla = new Classifying();
 		cla.Train(result);
-		cla.Save("/Users/xuan/Documents/workspace/FenCi/msr_theta.txt");
+		cla.Save("/Users/xuan/Documents/workspace/FenCi/msr_theta_new.txt");
 		System.out.println("测试完成，结果已保存");
 	}
 

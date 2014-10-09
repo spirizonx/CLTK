@@ -18,7 +18,7 @@ public class Segmenting {
 		cla = new Classifying();
 		//词典和分类器的整备暂时在此进行
 		dict.Train("/Users/xuan/Documents/workspace/FenCi/msr_training.txt");
-		cla.Load("/Users/xuan/Documents/workspace/FenCi/msr_theta.txt");
+		cla.Load("/Users/xuan/Documents/workspace/FenCi/msr_theta_new.txt");
 	}
 	
 	private boolean isEngOrNum(char inchar) {
@@ -76,7 +76,10 @@ public class Segmenting {
 		}
 		while(true) {
 			int size = line.length();
-			if(size < 5) {
+			if(size < 4) {
+				fw.write(line);
+				fw.write('\n');
+				fw.flush();
 				try {
 					line = bw.readLine();
 					//line = line + "\n";

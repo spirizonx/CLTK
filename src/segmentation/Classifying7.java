@@ -9,15 +9,13 @@ import java.io.IOException;
 import java.lang.Math;
 import java.util.ArrayList;
 
-public class Classifying {
+public class Classifying7 {
 	private Vector<Double> theta;
 	private int dim;
-	//给出一个仅供参考的theta值：
-	//[0.8411980493492742 -1.8317604794539857 3.725918833455806 -1.6481082845749344 1.2842262106030224]
 	
-	public Classifying() {
+	public Classifying7() {
 		theta = new Vector<>();
-		dim = 5;
+		dim = 7;
 		for(int i = 0; i < dim; i++) {
 			theta.add(0.0);
 		}
@@ -80,6 +78,8 @@ public class Classifying {
 		fw.write(Double.toString(theta.elementAt(2)) + "\n");
 		fw.write(Double.toString(theta.elementAt(3)) + "\n");
 		fw.write(Double.toString(theta.elementAt(4)) + "\n");
+		fw.write(Double.toString(theta.elementAt(5)) + "\n");
+		fw.write(Double.toString(theta.elementAt(6)) + "\n");
 		fw.close();
 	}
 	

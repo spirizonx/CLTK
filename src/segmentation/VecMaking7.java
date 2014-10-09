@@ -7,16 +7,16 @@ import java.io.FileReader;
 import java.io.IOException;
 import segmentation.Training;
 
-public class VecMaking {
+public class VecMaking7 {
 	private Vector<Vector<Double>> Vecs;
 	private Training Dict;
 	
-	public VecMaking() {
+	public VecMaking7() {
 		Vecs = new Vector<>();
 		Dict = new Training();
 	}
 	
-	public VecMaking(Training inDict) {
+	public VecMaking7(Training inDict) {
 		Vecs = new Vector<>();
 		Dict = inDict;
 	}
@@ -35,66 +35,36 @@ public class VecMaking {
 			return;
 		}
 		Vector<Double> tmp;
-		char char1, char2, char3, char4, char5, char6, char7;
+		char chars[];
+		chars = new char[14];
+		//直观起见，chars[0]不使用
 		int endTest, i = 0;
-		char2 = (char)in.read();
-		char3 = (char)in.read();
-		char4 = (char)in.read();
-		char5 = (char)in.read();
-		char6 = (char)in.read();
-		char7 = (char)in.read();
+		for(int t = 2; t < 14; t++) {
+			chars[t] = (char)in.read();
+		}
 		endTest = in.read();
 		while(endTest != -1 && i < 5000) {
-			char1 = char2;
-			char2 = char3;
-			char3 = char4;
-			char4 = char5;
-			char5 = char6;
-			char6 = char7;
-			char7 = (char)endTest;
-			if(char1 != ' ') {
-				while(char2 == ' ' && char3 == ' ') {
-					char2 = char3;
-					char3 = char4;
-					char4 = char5;
-					char5 = char6;
-					char6 = char7;
-					endTest = in.read();
-					if(endTest != -1) {
-						char7 = (char)endTest;
-					} else {
+			for(int t = 1; t < 13; t++) {
+				chars[t] = chars[t+1];
+			}
+			chars[13] = (char)endTest;
+			if(chars[1] != ' ') {
+				for(int t = 2; t < 14; t = t + 2) {
+					while(chars[t] == ' ' && chars[t+1] == ' ') {
+						for(int tt = t; tt < 13; tt++) {
+							chars[t] = chars[t+1];
+						}
+						endTest = in.read();	
+						if(endTest != -1) {
+							chars[13] = (char)endTest;
+						} else {
+							break;
+						}
+					}
+					if(endTest == -1) {
 						break;
 					}
-				}
-				if(endTest == -1) {
-					break;
-				}
-				while(char4 == ' ' && char5 == ' ') {
-					char4 = char5;
-					char5 = char6;
-					char6 = char7;
-					endTest = in.read();
-					if(endTest != -1) {
-						char7 = (char)endTest;
-					} else {
-						break;
-					}
-				}
-				if(endTest == -1) {
-					break;
-				}
-				while(char6 == ' ' && char7 == ' ') {
-					char6 = char7;
-					endTest = in.read();
-					if(endTest != -1) {
-						char7 = (char)endTest;
-					} else {
-						break;
-					}
-				}
-				if(endTest == -1) {
-					break;
-				}
+				}	//以下部分尚未改写
 				
 				//下面正式开始生成向量
 				if(char2 == ' ') {

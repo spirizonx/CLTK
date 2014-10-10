@@ -33,7 +33,7 @@ public class Classifying7 {
 	}
 	
 	public void Train(Vector<Vector<Double>> invec) {
-		double alpha = 0.08;
+		double alpha = 0.13;
 		//这个alpha的设置其实很重要
 		int vecCount = invec.size();
 		Vector<Double> Y = new Vector<>();
@@ -48,7 +48,7 @@ public class Classifying7 {
 			X.add(tmp);
 		}
 		//以上，接收传来的训练用向量集
-		int trainTimes = 16000;
+		int trainTimes = 100000;
 		double[] delta;
 		delta = new double[dim];
 		for(int i = 0; i < trainTimes; i++) {

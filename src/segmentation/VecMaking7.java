@@ -93,13 +93,13 @@ public class VecMaking7 {
 					}
 					tmp = new Vector<>();
 					tmp.add(1.0);
-					tmp.add(Dict.getProbab("---"+before[0]+before[1]+before[2]));
+					tmp.add(Dict.getProbab("--+"+before[1]+before[2]+after[0]));
 					tmp.add(Dict.getProbab("--"+before[1]+before[2]));
 					tmp.add(Dict.getProbab("-"+before[2]));
 					tmp.add(Dict.getProbab("-+"+before[2]+after[0]));
 					tmp.add(Dict.getProbab("+"+after[0]));
 					tmp.add(Dict.getProbab("++"+after[0]+after[1]));
-					tmp.add(Dict.getProbab("+++"+after[0]+after[1]+after[2]));
+					tmp.add(Dict.getProbab("-++"+before[2]+after[0]+after[1]));
 					Vecs.add(tmp);
 				}
 				else {
@@ -114,13 +114,13 @@ public class VecMaking7 {
 					}
 					tmp = new Vector<>();
 					tmp.add(0.0);
-					tmp.add(Dict.getProbab("---"+before[0]+before[1]+before[2]));
+					tmp.add(Dict.getProbab("--+"+before[1]+before[2]+after[0]));
 					tmp.add(Dict.getProbab("--"+before[1]+before[2]));
 					tmp.add(Dict.getProbab("-"+before[2]));
 					tmp.add(Dict.getProbab("-+"+before[2]+after[0]));
 					tmp.add(Dict.getProbab("+"+after[0]));
 					tmp.add(Dict.getProbab("++"+after[0]+after[1]));
-					tmp.add(Dict.getProbab("+++"+after[0]+after[1]+after[2]));
+					tmp.add(Dict.getProbab("-++"+before[2]+after[0]+after[1]));
 					Vecs.add(tmp);
 				}
 			}

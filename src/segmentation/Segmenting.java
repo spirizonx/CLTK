@@ -13,19 +13,19 @@ public class Segmenting {
 	private Training dict;
 	private Classifying cla5;
 	private Classifying3 cla3;
-	private Classifying9 cla9;
+	private Classifying7 cla7;
 	
 	public Segmenting() throws IOException {
 		dict = new Training();
 		cla5 = new Classifying();
 		cla3 = new Classifying3();
-		cla9 = new Classifying9();
+		cla7 = new Classifying7();
 		
 		//词典和分类器的整备暂时在此进行
 		dict.Train("/Users/xuan/Documents/workspace/FenCi/msr_training.txt");
 		cla5.Load("/Users/xuan/Documents/workspace/FenCi/msr_theta_5.txt");
 		cla3.Load("/Users/xuan/Documents/workspace/FenCi/msr_theta_3.txt");
-		cla9.Load("/Users/xuan/Documents/workspace/FenCi/msr_theta_9.txt");
+		cla7.Load("/Users/xuan/Documents/workspace/FenCi/msr_theta_7.txt");
 	}
 	
 	private boolean isEngOrNum(char inchar) {
@@ -83,7 +83,7 @@ public class Segmenting {
 		}
 		while(true) {
 			int size = line.length();
-			if(size < 6) {
+			if(size < 5) {
 				fw.write(line);
 				fw.write('\n');
 				fw.flush();
@@ -100,7 +100,7 @@ public class Segmenting {
 				continue;
 			}
 			result = new Vector<>();
-			double es3, es5;
+			double es3, es5, es7;
 			//开头
 			//第一个间隔
 			tmp = new Vector<>();
@@ -117,7 +117,7 @@ public class Segmenting {
 			tmp.add(0, dict.getProbab("--" + line.charAt(0) + line.charAt(1)));
 			tmp.add(dict.getProbab("++" + line.charAt(2) + line.charAt(3)));
 			es5 = cla5.h(tmp);
-			if(0.3*es3 + 0.7*es5 > 0.5) {
+			if(0.4*es3 + 0.6*es5 > 0.5) {
 				result.add(1);
 			}
 			else {
@@ -132,13 +132,11 @@ public class Segmenting {
 				es3 = cla3.h(tmp);
 				tmp.add(0, dict.getProbab("--" + line.charAt(i-1) + line.charAt(i)));
 				tmp.add(dict.getProbab("++" + line.charAt(i+1) + line.charAt(i+2)));
-				/*tmp.add(0, dict.getProbab("---" + line.charAt(i-2) + line.charAt(i-1) + line.charAt(i)));
-				tmp.add(dict.getProbab("+++" + line.charAt(i+1) + line.charAt(i+2) + line.charAt(i+3)));
-				tmp.add(dict.getProbab("--+" + line.charAt(i-1) + line.charAt(i) + line.charAt(i+1)));
-				tmp.add(dict.getProbab("-++" + line.charAt(i) + line.charAt(i+1) + line.charAt(i+2)));*/
-				//...
 				es5 = cla5.h(tmp);
-				if(0.3*es3 + 0.7*es5 > 0.5) {
+				tmp.add(0, dict.getProbab("--+" + line.charAt(i-1) + line.charAt(i) + line.charAt(i+1)));
+				tmp.add(dict.getProbab("-++" + line.charAt(i) + line.charAt(i+1) + line.charAt(i+2)));
+				es7 = cla7.h(tmp);
+				if(0.2*es3 + 0.65*es5 + 0.15*es7 > 0.5) {
 					result.add(1);
 				}
 				else {
@@ -155,7 +153,7 @@ public class Segmenting {
 			tmp.add(0, dict.getProbab("--" + line.charAt(size-4) + line.charAt(size-3)));
 			tmp.add(dict.getProbab("++" + line.charAt(size-2) + line.charAt(size-1)));
 			es5 = cla5.h(tmp);
-			if(0.3*es3 + 0.7*es5 > 0.5) {
+			if(0.4*es3 + 0.6*es5 > 0.5) {
 				result.add(1);
 			}
 			else {

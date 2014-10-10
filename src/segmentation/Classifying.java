@@ -12,8 +12,6 @@ import java.util.ArrayList;
 public class Classifying {
 	private Vector<Double> theta;
 	private int dim;
-	//给出一个仅供参考的theta值：
-	//[0.8411980493492742 -1.8317604794539857 3.725918833455806 -1.6481082845749344 1.2842262106030224]
 	
 	public Classifying() {
 		theta = new Vector<>();
@@ -23,7 +21,7 @@ public class Classifying {
 		}
 	}
 	
-	private double h(Vector<Double> X) {
+	public double h(Vector<Double> X) {
 		double tmp = 0;
 		for(int i = 0; i < dim; i++) {
 			tmp = tmp + theta.elementAt(i) * X.elementAt(i);
@@ -35,7 +33,7 @@ public class Classifying {
 	}
 	
 	public void Train(Vector<Vector<Double>> invec) {
-		double alpha = 0.05;
+		double alpha = 0.15;
 		//这个alpha的设置其实很重要
 		int vecCount = invec.size();
 		Vector<Double> Y = new Vector<>();
@@ -50,7 +48,7 @@ public class Classifying {
 			X.add(tmp);
 		}
 		//以上，接收传来的训练用向量集
-		int trainTimes = 2000;
+		int trainTimes = 40000;
 		double[] delta;
 		delta = new double[dim];
 		for(int i = 0; i < trainTimes; i++) {
@@ -100,8 +98,6 @@ public class Classifying {
 		for(int i = 0; i < dim; i++) {
 			theta.set(i, Double.parseDouble(list.get(i)));
 		}
-		System.out.print("Theta: ");
-		System.out.println(theta);
 	}
 	
 	public int Classify(Vector<Double> in) {

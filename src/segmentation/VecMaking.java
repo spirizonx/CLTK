@@ -16,6 +16,11 @@ public class VecMaking {
 		Dict = new Training();
 	}
 	
+	public VecMaking(Training inDict) {
+		Vecs = new Vector<>();
+		Dict = inDict;
+	}
+	
 	public void SetVecFrom(String CorpFile) throws IOException {
 		try {
 			Dict.Train(CorpFile);
@@ -234,11 +239,12 @@ public class VecMaking {
 				}
 			}
 			endTest = in.read();
+			i++;
 		}
 		
 		try {
 			in.close();
-			i++;
+			
 		} catch (IOException e) {
 			//do nothing...
 		}

@@ -8,7 +8,7 @@ class TrainTest {
 		Training test;
 		test = new Training();
 		test.Train("/Users/xuan/Documents/workspace/FenCi/MiniCorpus.txt");
-		System.out.println(test.getProbab("-+努力"));
+		System.out.println(test.getProbab("+++你们好"));
 		System.out.println("测试完成。");
 	}
 }

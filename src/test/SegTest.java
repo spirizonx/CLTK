@@ -9,7 +9,7 @@ public class SegTest {
 		Segmenting test;
 		test = new Segmenting();
 		test.SegInFile("/Users/xuan/Documents/workspace/FenCi/msr_test.txt",
-				"/Users/xuan/Documents/workspace/FenCi/msr_result2.txt");
+				"/Users/xuan/Documents/workspace/FenCi/msr_result.txt");
 		System.out.println("测试完成。");
 	}
 

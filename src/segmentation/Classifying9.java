@@ -9,13 +9,13 @@ import java.io.IOException;
 import java.lang.Math;
 import java.util.ArrayList;
 
-public class Classifying {
+public class Classifying9 {
 	private Vector<Double> theta;
 	private int dim;
 	
-	public Classifying() {
+	public Classifying9() {
 		theta = new Vector<>();
-		dim = 5;
+		dim = 9;
 		for(int i = 0; i < dim; i++) {
 			theta.add(0.0);
 		}
@@ -78,6 +78,10 @@ public class Classifying {
 		fw.write(Double.toString(theta.elementAt(2)) + "\n");
 		fw.write(Double.toString(theta.elementAt(3)) + "\n");
 		fw.write(Double.toString(theta.elementAt(4)) + "\n");
+		fw.write(Double.toString(theta.elementAt(5)) + "\n");
+		fw.write(Double.toString(theta.elementAt(6)) + "\n");
+		fw.write(Double.toString(theta.elementAt(7)) + "\n");
+		fw.write(Double.toString(theta.elementAt(8)) + "\n");
 		fw.close();
 	}
 	

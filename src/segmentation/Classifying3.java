@@ -48,7 +48,7 @@ public class Classifying3 {
 			X.add(tmp);
 		}
 		//以上，接收传来的训练用向量集
-		int trainTimes = 1500;
+		int trainTimes = 16000;
 		double[] delta;
 		delta = new double[dim];
 		for(int i = 0; i < trainTimes; i++) {
@@ -96,8 +96,6 @@ public class Classifying3 {
 		for(int i = 0; i < dim; i++) {
 			theta.set(i, Double.parseDouble(list.get(i)));
 		}
-		System.out.print("Theta: ");
-		System.out.println(theta);
 	}
 	
 	public int Classify(Vector<Double> in) {

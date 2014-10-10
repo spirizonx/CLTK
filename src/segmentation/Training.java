@@ -514,6 +514,211 @@ public class Training {
 		return;
 	}
 	
+	//增补前二后一、前一后二的情形
+	public void Train_Pccbc(String CorpFile) throws IOException {
+		int tmp;
+		BufferedReader in;
+		try {
+			in = new BufferedReader(new FileReader(CorpFile));
+		} catch (FileNotFoundException e) {
+			System.out.println("未找到对应文件。");
+			return;
+		}
+		//遍历前二后一
+		int endTest = 0;
+		char char1, char2, char3, char4, char5;
+		char2 = (char)in.read();
+		char3 = (char)in.read();
+		char4 = (char)in.read();
+		char5 = (char)in.read();
+		endTest = in.read();
+		while(endTest != -1) {
+			char1 = char2;
+			char2 = char3;
+			char3 = char4;
+			char4 = char5;
+			char5 = (char)endTest;
+			if(char1 != ' ') {
+				while(char2 == ' ' && char3 == ' ') {
+					char2 = char3;
+					char3 = char4;
+					char4 = char5;
+					endTest = in.read();
+					if(endTest != -1) {
+						char5 = (char)endTest;
+					} else {
+						break;
+					}
+				}
+				if(endTest == -1) {
+					break;
+				}
+				while(char4 == ' ' && char5 == ' ') {
+					char4 = char5;
+					endTest = in.read();
+					if(endTest != -1) {
+						char5 = (char)endTest;
+					} else {
+						break;
+					}
+				}
+				if(endTest == -1) {
+					break;
+				}
+				if(char2 == ' ') {
+					if(char4 == ' ') {
+						tmp = r_yes.getOrDefault("--+"+char1+char3+char5, 0);
+						if(tmp == 0) {
+							r_yes.put("--+"+char1+char3+char5, 1);
+						} else {
+							r_yes.replace("--+"+char1+char3+char5, tmp, tmp+1);
+						}
+					}
+					else {
+						tmp = r_no.getOrDefault("--+"+char1+char3+char4, 0);
+						if(tmp == 0) {
+							r_no.put("--+"+char1+char3+char4, 1);
+						} else {
+							r_no.replace("--+"+char1+char3+char4, tmp, tmp+1);
+						}
+					}
+				} else {
+					if(char3 == ' ') {
+						if(char4 == ' ') {
+							tmp = r_yes.getOrDefault("--+"+char1+char2+char5, 0);
+							if(tmp == 0) {
+								r_yes.put("--+"+char1+char2+char5, 1);
+							} else {
+								r_yes.replace("--+"+char1+char2+char5, tmp, tmp+1);
+							}
+						}
+						else {
+							tmp = r_no.getOrDefault("--+"+char1+char2+char4, 0);
+							if(tmp == 0) {
+								r_no.put("--+"+char1+char2+char4, 1);
+							} else {
+								r_no.replace("--+"+char1+char2+char4, tmp, tmp+1);
+							}
+						}
+					}
+					else {
+						tmp = r_no.getOrDefault("--+"+char1+char2+char3, 0);
+						if(tmp == 0) {
+							r_no.put("--+"+char1+char2+char3, 1);
+						} else {
+							r_no.replace("--+"+char1+char2+char3, tmp, tmp+1);
+						}
+					}
+				}
+			}
+			endTest = in.read();
+		}
+		in.close();
+		return;
+	}
+	
+	public void Train_Pcbcc(String CorpFile) throws IOException {
+		int tmp;
+		BufferedReader in;
+		try {
+			in = new BufferedReader(new FileReader(CorpFile));
+		} catch (FileNotFoundException e) {
+			System.out.println("未找到对应文件。");
+			return;
+		}
+		//遍历前一后二
+		int endTest = 0;
+		char char1, char2, char3, char4, char5;
+		char2 = (char)in.read();
+		char3 = (char)in.read();
+		char4 = (char)in.read();
+		char5 = (char)in.read();
+		endTest = in.read();
+		while(endTest != -1) {
+			char1 = char2;
+			char2 = char3;
+			char3 = char4;
+			char4 = char5;
+			char5 = (char)endTest;
+			if(char1 != ' ') {
+				while(char2 == ' ' && char3 == ' ') {
+					char2 = char3;
+					char3 = char4;
+					char4 = char5;
+					endTest = in.read();
+					if(endTest != -1) {
+						char5 = (char)endTest;
+					} else {
+						break;
+					}
+				}
+				if(endTest == -1) {
+					break;
+				}
+				while(char4 == ' ' && char5 == ' ') {
+					char4 = char5;
+					endTest = in.read();
+					if(endTest != -1) {
+						char5 = (char)endTest;
+					} else {
+						break;
+					}
+				}
+				if(endTest == -1) {
+					break;
+				}
+				if(char2 == ' ') {
+					if(char4 == ' ') {
+						tmp = r_yes.getOrDefault("-++"+char1+char3+char5, 0);
+						if(tmp == 0) {
+							r_yes.put("-++"+char1+char3+char5, 1);
+						} else {
+							r_yes.replace("-++"+char1+char3+char5, tmp, tmp+1);
+						}
+					}
+					else {
+						tmp = r_yes.getOrDefault("-++"+char1+char3+char4, 0);
+						if(tmp == 0) {
+							r_yes.put("-++"+char1+char3+char4, 1);
+						} else {
+							r_yes.replace("-++"+char1+char3+char4, tmp, tmp+1);
+						}
+					}
+				} else {
+					if(char3 == ' ') {
+						if(char4 == ' ') {
+							tmp = r_no.getOrDefault("-++"+char1+char2+char5, 0);
+							if(tmp == 0) {
+								r_no.put("-++"+char1+char2+char5, 1);
+							} else {
+								r_no.replace("-++"+char1+char2+char5, tmp, tmp+1);
+							}
+						}
+						else {
+							tmp = r_no.getOrDefault("-++"+char1+char2+char4, 0);
+							if(tmp == 0) {
+								r_no.put("-++"+char1+char2+char4, 1);
+							} else {
+								r_no.replace("-++"+char1+char2+char4, tmp, tmp+1);
+							}
+						}
+					}
+					else {
+						tmp = r_no.getOrDefault("-++"+char1+char2+char3, 0);
+						if(tmp == 0) {
+							r_no.put("-++"+char1+char2+char3, 1);
+						} else {
+							r_no.replace("-++"+char1+char2+char3, tmp, tmp+1);
+						}
+					}
+				}
+			}
+			endTest = in.read();
+		}
+		in.close();
+		return;
+	}
+	
 	public void Train(String CorpFile) throws IOException {
 		//用这一个函数来整合所有的训练函数
 		Train_Pccb(CorpFile);
@@ -523,6 +728,10 @@ public class Training {
 		Train_Pcbc(CorpFile);
 		Train_Pcccb(CorpFile);
 		Train_Pbccc(CorpFile);
+		
+		//最后两个增补的训练函数
+		Train_Pccbc(CorpFile);
+		Train_Pcbcc(CorpFile);
 	}
 	
 	//用法：String开头为一到三个加（减）号

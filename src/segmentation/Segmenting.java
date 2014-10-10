@@ -13,19 +13,19 @@ public class Segmenting {
 	private Training dict;
 	private Classifying cla5;
 	private Classifying3 cla3;
-	private Classifying7 cla7;
+	private Classifying9 cla9;
 	
 	public Segmenting() throws IOException {
 		dict = new Training();
 		cla5 = new Classifying();
 		cla3 = new Classifying3();
-		cla7 = new Classifying7();
+		cla9 = new Classifying9();
 		
 		//词典和分类器的整备暂时在此进行
 		dict.Train("/Users/xuan/Documents/workspace/FenCi/msr_training.txt");
 		cla5.Load("/Users/xuan/Documents/workspace/FenCi/msr_theta_5.txt");
 		cla3.Load("/Users/xuan/Documents/workspace/FenCi/msr_theta_3.txt");
-		cla7.Load("/Users/xuan/Documents/workspace/FenCi/msr_theta_7.txt");
+		cla9.Load("/Users/xuan/Documents/workspace/FenCi/msr_theta_9.txt");
 	}
 	
 	private boolean isEngOrNum(char inchar) {
@@ -100,7 +100,7 @@ public class Segmenting {
 				continue;
 			}
 			result = new Vector<>();
-			double res3, res5, res7;
+			double es3, es5;
 			//开头
 			//第一个间隔
 			tmp = new Vector<>();
@@ -113,14 +113,14 @@ public class Segmenting {
 			tmp.add(dict.getProbab("-" + line.charAt(1)));
 			tmp.add(dict.getProbab("-+" + line.charAt(1) + line.charAt(2)));
 			tmp.add(dict.getProbab("+" + line.charAt(2)));
-			res3 = cla3.h(tmp);
+			es3 = cla3.h(tmp);
 			tmp.add(0, dict.getProbab("--" + line.charAt(0) + line.charAt(1)));
 			tmp.add(dict.getProbab("++" + line.charAt(2) + line.charAt(3)));
-			res5 = cla5.h(tmp);
-			//下面就涉及到了权重
-			if(res3 + res5 > 1) {
+			es5 = cla5.h(tmp);
+			if(0.3*es3 + 0.7*es5 > 0.5) {
 				result.add(1);
-			} else {
+			}
+			else {
 				result.add(0);
 			}
 			//中段
@@ -129,24 +129,21 @@ public class Segmenting {
 				tmp.add(dict.getProbab("-" + line.charAt(i)));
 				tmp.add(dict.getProbab("-+" + line.charAt(i) + line.charAt(i+1)));
 				tmp.add(dict.getProbab("+" + line.charAt(i+1)));
-				res3 = cla3.h(tmp);
+				es3 = cla3.h(tmp);
 				tmp.add(0, dict.getProbab("--" + line.charAt(i-1) + line.charAt(i)));
 				tmp.add(dict.getProbab("++" + line.charAt(i+1) + line.charAt(i+2)));
-				res5 = cla5.h(tmp);
-				tmp.add(0, dict.getProbab("---" + line.charAt(i-2) + line.charAt(i-1) + line.charAt(i)));
+				/*tmp.add(0, dict.getProbab("---" + line.charAt(i-2) + line.charAt(i-1) + line.charAt(i)));
 				tmp.add(dict.getProbab("+++" + line.charAt(i+1) + line.charAt(i+2) + line.charAt(i+3)));
-				res7 = cla7.h(tmp);
-				//这里又涉及到权重问题
-				if(0.3*res3 + 0.3*res5 + 0.4*res7 > 0.5) {
+				tmp.add(dict.getProbab("--+" + line.charAt(i-1) + line.charAt(i) + line.charAt(i+1)));
+				tmp.add(dict.getProbab("-++" + line.charAt(i) + line.charAt(i+1) + line.charAt(i+2)));*/
+				//...
+				es5 = cla5.h(tmp);
+				if(0.3*es3 + 0.7*es5 > 0.5) {
 					result.add(1);
-				} else {
+				}
+				else {
 					result.add(0);
 				}
-				/*if(res7 > 0.5) {
-					result.add(1);
-				} else {
-					result.add(0);
-				}*/
 			}
 			//结尾
 			//倒数第二个
@@ -154,13 +151,14 @@ public class Segmenting {
 			tmp.add(dict.getProbab("-" + line.charAt(size-3)));
 			tmp.add(dict.getProbab("-+" + line.charAt(size-3) + line.charAt(size-2)));
 			tmp.add(dict.getProbab("+" + line.charAt(size-2)));
-			res3 = cla3.h(tmp);
+			es3 = cla3.h(tmp);
 			tmp.add(0, dict.getProbab("--" + line.charAt(size-4) + line.charAt(size-3)));
 			tmp.add(dict.getProbab("++" + line.charAt(size-2) + line.charAt(size-1)));
-			res5 = cla5.h(tmp);
-			if(res3 + res5 > 1) {
+			es5 = cla5.h(tmp);
+			if(0.3*es3 + 0.7*es5 > 0.5) {
 				result.add(1);
-			} else {
+			}
+			else {
 				result.add(0);
 			}
 			//倒数第一个
